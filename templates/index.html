@@ -214,18 +214,21 @@ document.getElementById("save-btn").onclick = async function () {
     link.click();
     document.body.removeChild(link);
 
-    fetch("/api/save_image/", {
+     fetch("/api/save_image/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData })
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log("图片已保存:", data.url);
-    })
-    .catch(err => {
-        console.error("上传失败:", err);
-    });
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("上传成功，文件URL:", data.url);
+          // 可以在这里处理上传成功后的逻辑
+        } else {
+          console.error("上传失败:", data.error);
+        }
+      })
+      .catch(error => console.error("请求失败:", error));
 
 
     restore();

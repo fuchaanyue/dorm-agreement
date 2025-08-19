@@ -42,17 +42,29 @@ INSTALLED_APPS = [
     "storages",
 ]
 
-DEFAULT_FILE_STORAGE = "myproject.storage_backends.TencentCOSStorage"
+# DEFAULT_FILE_STORAGE = "myproject.storage_backends.TencentCOSStorage"
+#
+# # 腾讯云 COS 配置
+# TENCENT_SECRET_ID = "TENCENT_SECRET_ID"
+# TENCENT_SECRET_KEY = "TENCENT_SECRET_KEY"
+# TENCENT_REGION = "ap-beijing"   # 替换成你的地域，比如 ap-beijing、ap-guangzhou
+# TENCENT_BUCKET = "fay-1322786833"  # 注意必须带 AppId
+# TENCENT_BUCKET_DOMAIN = "https://fay-1322786833.cos.ap-beijing.myqcloud.com"
+#
+# CORS_ALLOW_ALL_ORIGINS = True
 
-# 腾讯云 COS 配置
-TENCENT_SECRET_ID = "TENCENT_SECRET_ID"
-TENCENT_SECRET_KEY = "TENCENT_SECRET_KEY"
-TENCENT_REGION = "ap-beijing"   # 替换成你的地域，比如 ap-beijing、ap-guangzhou
-TENCENT_BUCKET = "fay-1322786833"  # 注意必须带 AppId
-TENCENT_BUCKET_DOMAIN = "https://fay-1322786833.cos.ap-beijing.myqcloud.com"
+from dotenv import load_dotenv
+import os
 
-CORS_ALLOW_ALL_ORIGINS = True
-
+# 加载.env文件
+load_dotenv()
+COS_CONFIG = {
+    'Region': os.getenv('COS_REGION'),
+    'SecretId': os.getenv('COS_SECRET_ID'),
+    'SecretKey': os.getenv('COS_SECRET_KEY'),
+    'Bucket': os.getenv('COS_BUCKET'),
+    'Scheme': 'https:'  # 可选，使用https协议
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
