@@ -19,3 +19,6 @@ class AgreementSupplement(models.Model):
 
     def __str__(self):
         return f"补充 {self.serial_number}"
+
+class Document(models.Model):
+    file = models.FileField(upload_to="docs/")
