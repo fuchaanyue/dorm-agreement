@@ -17,39 +17,50 @@ def index(request):
     })
 @csrf_exempt
 def save_image(request):
-    if request.method == 'POST':
-        try:
-            # 获取前端传来的图片数据
+    if request.method != 'POST':
+        return JsonResponse({'error': '无效的请求方法'}, status=405)
 
-            data = json.loads(request.body)
-            image_data = data.get('image')
-            if not image_data:
-                return JsonResponse({'error': '未提供图片数据'}, status=400)
+    try:
+        # 解析前端传来的 JSON 数据
+        data = json.loads(request.body)
+        image_data = data.get('image')
+        if not image_data:
+            return JsonResponse({'error': '未提供图片数据'}, status=400)
 
-            # 解析 base64 数据
-            format, imgstr = image_data.split(';base64,')
-            ext = format.split('/')[-1]
+        # 打印前端传来的前缀，便于调试
+        print("接收到图片数据前缀:", image_data[:30])
 
-            # 生成唯一文件名
-            timestamp = int(time.time())
-            filename = f"agreements/agreement_{timestamp}.{ext}"
+        # 解析 base64 数据
+        format, imgstr = image_data.split(';base64,')
+        ext = format.split('/')[-1]
 
-            # 解码成 bytes
-            file_content = base64.b64decode(imgstr)
+        # 构造唯一文件名和 COS 路径
+        timestamp = int(time.time())
+        filename = f"agreement_{timestamp}.{ext}"
+        file_path = f"agreements/{filename}"  # ✅ 明确路径前缀
 
-            # 上传到 COS
-            cos_client = COSClient()
-            file_url = cos_client.upload_image(file_content, filename)
+        print("生成文件名:", filename)
+        print("上传路径:", file_path)
 
-            return JsonResponse({
-                'success': True,
-                'url': file_url,
-                'filename': filename
-            })
+        # 解码成 bytes
+        file_content = base64.b64decode(imgstr)
 
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+        # 上传到 COS
+        cos_client = COSClient()
+        file_url = cos_client.upload_image(file_content, file_path)
 
-    return JsonResponse({'error': '无效的请求方法'}, status=405)
+        print("上传成功，文件URL:", file_url)
+
+        return JsonResponse({
+            'success': True,
+            'url': file_url,
+            'filename': filename
+        })
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()  # ✅ 打印完整堆栈
+        return JsonResponse({'error': f"图片上传失败: {str(e)}"}, status=500)
+
 
 
