@@ -50,7 +50,9 @@ TENCENT_SECRET_KEY = "TENCENT_SECRET_KEY"
 TENCENT_REGION = "ap-beijing"   # 替换成你的地域，比如 ap-beijing、ap-guangzhou
 TENCENT_BUCKET = "fay-1322786833"  # 注意必须带 AppId
 TENCENT_BUCKET_DOMAIN = "https://fay-1322786833.cos.ap-beijing.myqcloud.com"
-# 或者绑定的 CDN 域名，例如 https://static.xxx.com/
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
