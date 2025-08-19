@@ -214,7 +214,7 @@ document.getElementById("save-btn").onclick = async function () {
     link.click();
     document.body.removeChild(link);
 
-    fetch("https://dorm-agreement.onrender.com/api/save_image/", {
+    fetch("/api/save_image/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData })
