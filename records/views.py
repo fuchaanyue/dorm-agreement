@@ -1,9 +1,11 @@
+# views.py
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from cos_utils import COSClient
 import base64
 import time
+import json
 
 def index(request):
     """
@@ -18,7 +20,9 @@ def save_image(request):
     if request.method == 'POST':
         try:
             # 获取前端传来的图片数据
-            image_data = request.POST.get('image')
+
+            data = json.loads(request.body)
+            image_data = data.get('image')
             if not image_data:
                 return JsonResponse({'error': '未提供图片数据'}, status=400)
 
@@ -49,5 +53,3 @@ def save_image(request):
     return JsonResponse({'error': '无效的请求方法'}, status=405)
 
 
-def index(request):
-    return None
