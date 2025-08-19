@@ -1,10 +1,18 @@
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from cos_utils import COSClient
 import base64
 import time
 
-
+def index(request):
+    """
+    渲染前端页面，并传入表格循环范围变量
+    """
+    return render(request, "index.html", {
+        "range_10": range(1, 11),  # 主表 10 行
+        "range_5": range(1, 6)     # 补充表 5 行
+    })
 @csrf_exempt
 def save_image(request):
     if request.method == 'POST':
@@ -39,3 +47,7 @@ def save_image(request):
             return JsonResponse({'error': str(e)}, status=500)
 
     return JsonResponse({'error': '无效的请求方法'}, status=405)
+
+
+def index(request):
+    return None
