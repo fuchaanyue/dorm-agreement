@@ -2,7 +2,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from cos_utils import COSClient
+from records.cos_utils import COSClient
 import base64
 import time
 import json
