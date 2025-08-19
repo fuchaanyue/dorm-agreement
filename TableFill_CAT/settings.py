@@ -39,7 +39,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'records',  # ← 一定要加
     'rest_framework',  # ← 一定要加
+    "storages",
 ]
+
+DEFAULT_FILE_STORAGE = "myproject.storage_backends.TencentCOSStorage"
+
+# 腾讯云 COS 配置
+TENCENT_SECRET_ID = "TENCENT_SECRET_ID"
+TENCENT_SECRET_KEY = "TENCENT_SECRET_KEY"
+TENCENT_REGION = "ap-beijing"   # 替换成你的地域，比如 ap-beijing、ap-guangzhou
+TENCENT_BUCKET = "fay-1322786833"  # 注意必须带 AppId
+TENCENT_BUCKET_DOMAIN = "https://fay-1322786833.cos.ap-beijing.myqcloud.com"
+# 或者绑定的 CDN 域名，例如 https://static.xxx.com/
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
