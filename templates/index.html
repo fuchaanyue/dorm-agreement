@@ -214,18 +214,19 @@ document.getElementById("save-btn").onclick = async function () {
     link.click();
     document.body.removeChild(link);
 
-    // 发送给后端
-    fetch("https://你的后端域名/api/save_image/", {
+    fetch("https://dorm-agreement.onrender.com/api/save_image/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ image: imageData })
-    }).then(res => {
-        if (!res.ok) {
-            console.error("后端返回错误状态:", res.status);
-        }
-    }).catch(err => {
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("图片已保存:", data.url);
+    })
+    .catch(err => {
         console.error("上传失败:", err);
     });
+
 
     restore();
 };
